@@ -5,9 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1 Million Check Boxes</title>
     <style>
+        :root {
+            --bg-dark: #070b14;
+            --bg-panel: rgba(15, 23, 42, 0.82);
+            --bg-panel-strong: rgba(15, 23, 42, 0.95);
+            --border-soft: rgba(148, 163, 184, 0.18);
+            --text-primary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #22d3ee;
+            --accent-strong: #8b5cf6;
+            --shadow: rgba(15, 23, 42, 0.55);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            height: 100%;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(34, 211, 238, 0.22), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.2), transparent 30%),
+                linear-gradient(135deg, var(--bg-dark), #0f172a 42%, #111827 100%);
+            color: var(--text-primary);
+        }
+
         body {
-            background-color: black;
-            color: white;
+            display: grid;
+            place-items: center;
+            padding: 32px 20px;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            inset: auto;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.38;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            top: -120px;
+            left: -80px;
+            background: rgba(34, 211, 238, 0.5);
+        }
+
+        body::after {
+            right: -90px;
+            bottom: -120px;
+            background: rgba(139, 92, 246, 0.42);
+        }
+
+        #Container {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 1100px);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(18px, 1fr));
+            gap: 10px 10px;
+            padding: 26px 22px;
+            border: 1px solid var(--border-soft);
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.78));
+            box-shadow:
+                0 24px 80px var(--shadow),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        #Container input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            border-radius: 6px;
+            border: 1px solid rgba(148, 163, 184, 0.72);
+            background: rgba(15, 23, 42, 0.9);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.6);
+        }
+
+        #Container input[type="checkbox"]:hover {
+            border-color: rgba(34, 211, 238, 0.9);
+            transform: translateY(-1px) scale(1.06);
+            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.12);
+        }
+
+        #Container input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            border-color: transparent;
+            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.14);
+        }
+
+        #Container input[type="checkbox"]:checked::after {
+            content: "";
+            position: absolute;
+            inset: 3px 4px 4px 3px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.92);
+            clip-path: polygon(12% 56%, 0 67%, 38% 100%, 100% 18%, 84% 0, 34% 68%);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 18px 12px;
+            }
+
+            #Container {
+                gap: 8px 8px;
+                padding: 16px 14px;
+                border-radius: 18px;
+            }
+
+            #Container input[type="checkbox"] {
+                width: 14px;
+                height: 14px;
+            }
         }
     </style>
 </head>
@@ -28,22 +155,14 @@
         const container = document.getElementById('Container')
         const maxCheckBoxes = 200
 
-        // new Array(maxCheckBoxes).fill(null).forEach(_,index)=>{
+        //JavaScript to create 1 million checkboxes
+        new Array(maxCheckBoxes).fill(null).forEach((_, index) => {
 
-        // }
-
-        for(let i =0;i<maxCheckBoxes;i++){
-            const boxes = document.createElement('input')
-            boxes.type = 'checkbox'
-            boxes.id=`checkbox-${i}`
-            boxes.addEventListener('change',(event)=>{
-            const checked = event.target.checked
-            console.log("Checkbox checked",{i,checked})
-            socket.emit('client:checkbox:change',{i,checked})
+            const input = document.createElement('input')
+            input.type='checkbox'
+            container.appendChild(input)
             
-            })
-            container.appendChild(boxes)
-        }
+        });
 
     </script>
 </body>
