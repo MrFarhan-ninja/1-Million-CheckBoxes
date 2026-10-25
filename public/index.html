@@ -149,8 +149,14 @@
         const socket = io()
 
         socket.on('server:checkbox:checked',(data)=>{
-            console.log(data)
-        })
+            const {index,check} = data
+            
+            const input = document.getElementById(`Checkbox-${index}`)
+
+            if(input){
+                input.checked = check
+            }
+      })
     
         const container = document.getElementById('Container')
         const maxCheckBoxes = 200
@@ -160,6 +166,14 @@
 
             const input = document.createElement('input')
             input.type='checkbox'
+            input.id=`Checkbox-${index}`
+            
+            input.addEventListener('change',(e)=>{
+                 const check = e.target.checked
+                 console.log("CheckBoxesChecked",{index,check})
+                 socket.emit('client:checkbox:click',{index,check})
+            })
+
             container.appendChild(input)
             
         });

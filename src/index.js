@@ -15,11 +15,11 @@ async function main(){
     io.attach(server)
     
    io.on('connection', (socket) => {
-  console.log('A user connected');
+  console.log('A user connected',{id:socket.id});
 
 
 
-    socket.on('client:checkbox:change',(data)=>{
+    socket.on('client:checkbox:click',(data)=>{
     console.log(`[Socket:${socket.id}]:client:checkbox:change`,data)
     io.emit('server:checkbox:checked',data)
    })
