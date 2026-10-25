@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 Million Check Boxes</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="Container">
+
+    </div>
+
+     <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        const socket = io()
+
+        socket.on('server:checkbox:checked',(data)=>{
+            console.log(data)
+        })
+    
+        const container = document.getElementById('Container')
+        const maxCheckBoxes = 200
+
+        // new Array(maxCheckBoxes).fill(null).forEach(_,index)=>{
+
+        // }
+
+        for(let i =0;i<maxCheckBoxes;i++){
+            const boxes = document.createElement('input')
+            boxes.type = 'checkbox'
+            boxes.id=`checkbox-${i}`
+            boxes.addEventListener('change',(event)=>{
+            const checked = event.target.checked
+            console.log("Checkbox checked",{i,checked})
+            socket.emit('client:checkbox:change',{i,checked})
+            
+            })
+            container.appendChild(boxes)
+        }
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
