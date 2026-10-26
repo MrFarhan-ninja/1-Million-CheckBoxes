@@ -14,6 +14,10 @@ async function main(){
     const io = new Server();
     io.attach(server)
     
+    const state = {
+       checkboxes: new Array(100).fill(false)
+    }
+
    io.on('connection', (socket) => {
   console.log('A user connected',{id:socket.id});
 
@@ -22,6 +26,7 @@ async function main(){
     socket.on('client:checkbox:click',(data)=>{
     console.log(`[Socket:${socket.id}]:client:checkbox:change`,data)
     io.emit('server:checkbox:checked',data)
+    state.checkboxes[data.index] = data.check
    })
 
    })
@@ -33,6 +38,11 @@ async function main(){
     app.use(express.static(path.resolve('./public')))
     app.get("/",(_,res)=>{
         res.send({healthu:"OK"})
+    })
+    app.get("/checkboxes",(req,res)=>{
+       return res.json({
+            checkboxes:state.checkboxes
+        })
     })
 
     

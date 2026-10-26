@@ -159,14 +159,21 @@
       })
     
         const container = document.getElementById('Container')
-        const maxCheckBoxes = 200
+        const maxCheckBoxes = 100
 
-        //JavaScript to create 1 million checkboxes
-        new Array(maxCheckBoxes).fill(null).forEach((_, index) => {
+
+      window.addEventListener('load',async ()=>{
+        const response = await fetch('/checkboxes',{method:'GET'})
+        const data = await response.json()
+        
+        if(data && data.checkboxes){
+
+            data.checkboxes.forEach((serverValue,index)=>{
 
             const input = document.createElement('input')
             input.type='checkbox'
             input.id=`Checkbox-${index}`
+            input.checked = serverValue
             
             input.addEventListener('change',(e)=>{
                  const check = e.target.checked
@@ -175,8 +182,16 @@
             })
 
             container.appendChild(input)
-            
-        });
+
+            })
+
+        }
+        
+
+      })
+
+
+
 
     </script>
 </body>
