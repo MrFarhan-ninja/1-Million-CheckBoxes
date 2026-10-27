@@ -6,141 +6,328 @@
     <title>1 Million Check Boxes</title>
     <style>
         :root {
-            --bg-dark: #070b14;
-            --bg-panel: rgba(15, 23, 42, 0.82);
-            --bg-panel-strong: rgba(15, 23, 42, 0.95);
-            --border-soft: rgba(148, 163, 184, 0.18);
-            --text-primary: #e2e8f0;
-            --text-muted: #94a3b8;
-            --accent: #22d3ee;
-            --accent-strong: #8b5cf6;
-            --shadow: rgba(15, 23, 42, 0.55);
+            color-scheme: dark;
+            --bg: #0c0e0d;
+            --surface: #141715;
+            --surface-raised: #191d1a;
+            --border: #282e29;
+            --text: #f0f3ed;
+            --muted: #929a91;
+            --accent: #c4f169;
         }
 
         * {
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             margin: 0;
             min-height: 100%;
-            height: 100%;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background:
-                radial-gradient(circle at top left, rgba(34, 211, 238, 0.22), transparent 35%),
-                radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.2), transparent 30%),
-                linear-gradient(135deg, var(--bg-dark), #0f172a 42%, #111827 100%);
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         body {
+            min-height: 100vh;
+            padding: 44px 24px 32px;
+            background-image:
+                linear-gradient(rgba(196, 241, 105, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(196, 241, 105, 0.025) 1px, transparent 1px);
+            background-size: 44px 44px;
+        }
+
+        .page {
+            width: min(100%, 1120px);
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-mark {
             display: grid;
+            width: 30px;
+            height: 30px;
             place-items: center;
-            padding: 32px 20px;
-            overflow-x: hidden;
+            border-radius: 9px;
+            background: var(--accent);
+            color: #14190c;
         }
 
-        body::before,
-        body::after {
+        .brand-mark svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .topbar-note,
+        .eyebrow,
+        .board-label,
+        .board-meta,
+        .footer {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.11em;
+        }
+
+        .topbar-note {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        main {
+            padding-top: clamp(48px, 8vw, 88px);
+        }
+
+        .intro {
+            max-width: 700px;
+            margin-bottom: 42px;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0 0 18px;
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .eyebrow::before {
+            width: 7px;
+            height: 7px;
+            border-radius: 2px;
+            background: var(--accent);
             content: "";
-            position: fixed;
-            inset: auto;
-            width: 420px;
-            height: 420px;
+            transform: rotate(45deg);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(42px, 8vw, 76px);
+            font-weight: 650;
+            letter-spacing: -0.075em;
+            line-height: 0.98;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .intro-copy {
+            max-width: 490px;
+            margin: 22px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .board {
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .board-header {
+            display: flex;
+            min-height: 66px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 0 22px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .board-label {
+            color: var(--text);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .board-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .board-meta::before {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.38;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        body::before {
-            top: -120px;
-            left: -80px;
-            background: rgba(34, 211, 238, 0.5);
-        }
-
-        body::after {
-            right: -90px;
-            bottom: -120px;
-            background: rgba(139, 92, 246, 0.42);
+            background: var(--accent);
+            box-shadow: 0 0 12px rgba(196, 241, 105, 0.55);
+            content: "";
         }
 
         #Container {
-            position: relative;
-            z-index: 1;
-            width: min(100%, 1100px);
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(18px, 1fr));
-            gap: 10px 10px;
-            padding: 26px 22px;
-            border: 1px solid var(--border-soft);
-            border-radius: 24px;
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.78));
-            box-shadow:
-                0 24px 80px var(--shadow),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            gap: 12px;
+            min-height: 150px;
+            padding: 26px 24px;
         }
 
         #Container input[type="checkbox"] {
             appearance: none;
             -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            margin: 0;
-            border-radius: 6px;
-            border: 1px solid rgba(148, 163, 184, 0.72);
-            background: rgba(15, 23, 42, 0.9);
-            cursor: pointer;
             position: relative;
-            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.6);
+            width: 17px;
+            height: 17px;
+            margin: 0;
+            border: 1px solid #444d45;
+            border-radius: 5px;
+            background: var(--surface-raised);
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
         }
 
         #Container input[type="checkbox"]:hover {
-            border-color: rgba(34, 211, 238, 0.9);
-            transform: translateY(-1px) scale(1.06);
-            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.12);
+            border-color: var(--accent);
+            transform: scale(1.12);
+            box-shadow: 0 0 0 4px rgba(196, 241, 105, 0.1);
         }
 
         #Container input[type="checkbox"]:checked {
-            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-            border-color: transparent;
-            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.14);
+            border-color: var(--accent);
+            background: var(--accent);
+            box-shadow: 0 0 13px rgba(196, 241, 105, 0.2);
         }
 
         #Container input[type="checkbox"]:checked::after {
-            content: "";
             position: absolute;
-            inset: 3px 4px 4px 3px;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.92);
+            inset: 3px;
+            background: #18200d;
+            content: "";
             clip-path: polygon(12% 56%, 0 67%, 38% 100%, 100% 18%, 84% 0, 34% 68%);
+        }
+
+        #Container input[type="checkbox"]:focus-visible {
+            outline: 2px solid var(--text);
+            outline-offset: 3px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding-top: 18px;
+            color: #717970;
+            font-size: 9px;
         }
 
         @media (max-width: 640px) {
             body {
-                padding: 18px 12px;
+                padding: 24px 16px;
+            }
+
+            .topbar {
+                padding-bottom: 20px;
+            }
+
+            .topbar-note {
+                font-size: 9px;
+                text-align: right;
+            }
+
+            main {
+                padding-top: 52px;
+            }
+
+            .intro {
+                margin-bottom: 30px;
+            }
+
+            .intro-copy {
+                font-size: 14px;
+            }
+
+            .board-header {
+                min-height: 58px;
+                padding: 0 16px;
             }
 
             #Container {
-                gap: 8px 8px;
-                padding: 16px 14px;
-                border-radius: 18px;
+                grid-template-columns: repeat(auto-fill, minmax(15px, 1fr));
+                gap: 10px;
+                padding: 20px 16px;
             }
 
             #Container input[type="checkbox"] {
-                width: 14px;
-                height: 14px;
+                width: 15px;
+                height: 15px;
+            }
+
+            .footer {
+                font-size: 8px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
 <body>
-    <div id="Container">
+    <div class="page">
+        <header class="topbar">
+            <div class="brand">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span>Checkbox Club</span>
+            </div>
+            <span class="topbar-note">A tiny experiment in scale</span>
+        </header>
 
+        <main>
+            <section class="intro" aria-labelledby="page-title">
+                <p class="eyebrow">Shared canvas / 001</p>
+                <h1 id="page-title">One million ways<br>to <span>check in.</span></h1>
+                <p class="intro-copy">A shared field of checkboxes, kept in sync in real time. Pick a square and leave your mark.</p>
+            </section>
+
+            <section class="board" aria-label="Shared checkbox board">
+                <div class="board-header">
+                    <span class="board-label">The grid</span>
+                    <span class="board-meta">Live board</span>
+                </div>
+                <div id="Container"></div>
+            </section>
+
+            <footer class="footer">
+                <span>Every click is shared</span>
+                <span>Make it yours</span>
+            </footer>
+        </main>
     </div>
 
      <script src="/socket.io/socket.io.js"></script>
@@ -196,7 +383,6 @@
     </script>
 </body>
 </html>
-
 
 
 
