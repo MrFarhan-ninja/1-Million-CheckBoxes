@@ -1,7 +1,7 @@
 import http from 'node:http'
 import path from 'node:path'
 
-
+import { publisher,subscriber } from './redis-connection.js' 
 import config from './db/config.js'
 import {Server} from 'socket.io'
 import express from 'express'
@@ -14,6 +14,26 @@ async function main(){
     const io = new Server();
     io.attach(server)
     
+
+
+    await subscriber.subscribe('interval-server:checkbox:change');
+    subscriber.on('message',(channel,message)=>{
+        if(channel =='interval-server:checkbox:change'){
+            const {index,check} = JSON.parse(message)
+             io.emit('server:checkbox:checked',data)
+            state.checkboxes[index] = check
+        }
+    })
+
+
+
+
+
+
+
+
+
+
     const state = {
        checkboxes: new Array(100).fill(false)
     }
@@ -23,15 +43,22 @@ async function main(){
 
 
 
-    socket.on('client:checkbox:click',(data)=>{
+    socket.on('client:checkbox:click', async (data)=>{
     console.log(`[Socket:${socket.id}]:client:checkbox:change`,data)
-    io.emit('server:checkbox:checked',data)
-    state.checkboxes[data.index] = data.check
-   })
+    // io.emit('server:checkbox:checked',data)
+    // state.checkboxes[data.index] = data.check
+
+    await publisher.publish('interval-server:checkbox:change',)
+    JSON.stringify(data)
 
    })
 
 
+
+
+   })
+
+   
 
 
 
